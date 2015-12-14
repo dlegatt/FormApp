@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="gbApp">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Guestbook</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/starter-template.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Form</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+<div class="container" ng-controller="GuestBookController">
+    <div class="row">
+        <h1>Sign the Guestbook</h1>
+        <hr>
+        <form class="form-horizontal">
+            <div class="form-group" ng-class="{'has-error': errors.first_name}">
+                <label for="first-name" class="col-sm-2 control-label">First Name</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="first-name" ng-model="entry.first_name">
+                    <p class="help-block" ng-show="errors.first_name">{{errors.first_name}}</p>
+                </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': errors.last_name}">
+                <label for="last-name" class="col-sm-2 control-label">Last Name</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="last-name" ng-model="entry.last_name">
+                    <p class="help-block" ng-show="errors.last_name">{{errors.last_name}}</p>
+                </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': errors.email}">
+                <label for="email" class="col-sm-2 control-label">Email Address</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="email" ng-model="entry.email">
+                    <p class="help-block" ng-show="errors.email">{{errors.email}}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-6">
+                    <button type="submit" class="btn btn-primary" ng-click="sign(entry)">Sign</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <h1>Guest Book Entries</h1>
+        <hr>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email Address</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="entry in entries">
+                    <td>{{entry.first_name}}</td>
+                    <td>{{entry.last_name}}</td>
+                    <td>{{entry.email}}</td>
+                    <td><button class="btn btn-danger" ng-click="delete(entry)">
+                            <span class="glyphicon glyphicon-remove" title="delete"></span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div><!-- /.container -->
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/jquery/jquery-1.11.3.js"><\/script>')</script>
+<script src="js/bootstrap/bootstrap.js"></script>
+<script src="js/angular-1.4.8/angular.js"></script>
+<script src="js/angular-1.4.8/angular-resource.js"></script>
+<script src="js/angular-1.4.8/angular-route.js"></script>
+<script src="js/app.js"></script>
+<script src="js/controllers/GuestBookController.js"></script>
+<script src="js/services/GuestBookData.js"></script>
+</body>
+</html>
+
