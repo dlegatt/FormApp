@@ -11,14 +11,14 @@
     <title>Guestbook</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
     <!-- Custom styles for this template -->
     <link href="css/starter-template.css" rel="stylesheet">
 
 </head>
 
-<body>
+<body ng-cloak>
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
@@ -73,6 +73,16 @@
     <div class="row">
         <h1>Guest Book Entries</h1>
         <hr>
+        <div class="alert alert-success alert-dismissible" role="alert" ng-show="deleted">
+            <button type="button" class="close" ng-click="deleted=null" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            Record has been deleted: <strong>{{deleted.first_name}} {{deleted.last_name}}, {{deleted.email}}</strong><br>
+            <button class="btn btn-primary" ng-click="undoDelete()">Wait, bring it back!</button>
+        </div>
+        <div class="alert alert-danger alert-dismissible" role="alert" ng-show="notFound">
+            <button type="button" class="close" ng-click="notFound=null" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            This record does not appear to exist anymore and cannot be edited: <strong>{{notFound.first_name}} {{notFound.last_name}}, {{notFound.email}}</strong><br>
+            <button class="btn btn-primary" ng-click="notFound=null">Ok</button>
+        </div>
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
@@ -84,11 +94,37 @@
             </thead>
             <tbody>
                 <tr ng-repeat="entry in entries">
-                    <td>{{entry.first_name}}</td>
-                    <td>{{entry.last_name}}</td>
-                    <td>{{entry.email}}</td>
-                    <td><button class="btn btn-danger" ng-click="delete(entry)">
-                            <span class="glyphicon glyphicon-remove" title="delete"></span>
+                    <td ng-show="editing.id !== entry.id">{{entry.first_name}}</td>
+                    <td ng-show="editing.id !== entry.id">{{entry.last_name}}</td>
+                    <td ng-show="editing.id !== entry.id">{{entry.email}}</td>
+                    <td ng-show="editing.id !== entry.id">
+                        <button class="btn btn-danger" ng-click="delete(entry)" title="Delete">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                        <button class="btn btn-default" ng-click="editEntry(entry)" title="Edit {{entry.first_name}}">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </button>
+                    </td>
+                    <td ng-show="editing.id === entry.id">
+                        <input type="text" class="form-control" id="first-name-{{entry.id}}" ng-model="entry.first_name" value="{{entry.first_name}}">
+                        <p class="help-block has-error" ng-show="editErrors.first_name">{{editErrors.first_name}}</p>
+                    </td>
+                    <td ng-show="editing.id === entry.id">
+                        <input type="text" class="form-control" id="last-name-{{entry.id}}" ng-model="entry.last_name" value="{{entry.last_name}}">
+                        <p class="help-block has-error" ng-show="editErrors.last_name">{{editErrors.last_name}}</p>
+                    </td>
+                    <td ng-show="editing.id === entry.id">
+                        <div class="form-group" ng-class="{'has-error': editErrors.email}">
+                            <input type="email" class="form-control" id="email-{{entry.id}}" ng-model="entry.email" value="{{entry.email}}">
+                            <p class="help-block has-error" ng-show="editErrors.email">{{editErrors.email}}</p>
+                        </div>
+                    </td>
+                    <td ng-show="editing.id === entry.id">
+                        <button class="btn btn-primary" ng-click="save(entry)" title="Save">
+                            <span class="glyphicon glyphicon-ok"></span>
+                        </button>
+                        <button class="btn btn-default" ng-click="cancelEdit(entry)" title="Cancel">
+                            <span class="glyphicon glyphicon-remove"></span>
                         </button>
                     </td>
                 </tr>
